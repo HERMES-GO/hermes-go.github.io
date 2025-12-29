@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hyunsung Ko | Indie App Developer</title>
+    <meta
+      name="description"
+      content="Hyunsung Ko is a solo indie app developer with a background in electronic systems, FPGA design, and embedded systems."
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700&family=Space+Grotesk:wght@400;500;600&display=swap");
+
+      :root {
+        --bg-1: #f3efe7;
+        --bg-2: #e4f0ed;
+        --bg-3: #f6e6d4;
+        --ink: #14171a;
+        --muted: #4f5962;
+        --accent: #c46b2f;
+        --accent-2: #236b6a;
+        --card: rgba(255, 255, 255, 0.78);
+        --line: rgba(20, 25, 30, 0.1);
+        --shadow: 0 24px 50px rgba(16, 20, 24, 0.12);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", "Avenir Next", "Avenir", "Futura", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1200px 520px at 10% -10%, var(--bg-3), transparent),
+          radial-gradient(1000px 520px at 90% 0%, var(--bg-2), transparent),
+          linear-gradient(130deg, var(--bg-1), #ffffff 45%, var(--bg-2));
+        min-height: 100vh;
+      }
+
+      .gridlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.25;
+        background-image:
+          linear-gradient(90deg, rgba(20, 25, 30, 0.05) 1px, transparent 1px),
+          linear-gradient(rgba(20, 25, 30, 0.05) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      .glow {
+        position: fixed;
+        border-radius: 999px;
+        filter: blur(10px);
+        opacity: 0.5;
+      }
+
+      .glow.one {
+        width: 240px;
+        height: 240px;
+        background: radial-gradient(circle, #f7c49a 10%, rgba(247, 196, 154, 0) 70%);
+        top: 12%;
+        right: 10%;
+        animation: drift 18s ease-in-out infinite;
+      }
+
+      .glow.two {
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, #9fd8d4 10%, rgba(159, 216, 212, 0) 70%);
+        bottom: 10%;
+        left: 8%;
+        animation: drift 16s ease-in-out infinite reverse;
+      }
+
+      .page {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 80px 24px 72px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 44px;
+        background: var(--card);
+        border-radius: var(--radius);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+      }
+
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      h1 {
+        font-family: "Fraunces", "Palatino", "Book Antiqua", "Palatino Linotype", serif;
+        font-size: clamp(36px, 6vw, 64px);
+        margin: 0;
+        line-height: 1.05;
+      }
+
+      .lede {
+        font-size: 18px;
+        line-height: 1.7;
+        color: var(--muted);
+        max-width: 720px;
+      }
+
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        border: 1px solid transparent;
+      }
+
+      .btn.primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(196, 107, 47, 0.28);
+      }
+
+      .btn.ghost {
+        color: var(--ink);
+        background: #fff;
+        border-color: rgba(0, 0, 0, 0.08);
+      }
+
+      .meta {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .meta-card {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .meta-card span {
+        display: block;
+      }
+
+      .meta-card .label {
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .layout {
+        margin-top: 36px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+        gap: 20px;
+      }
+
+      .panel {
+        background: var(--card);
+        border-radius: 18px;
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 16px 36px rgba(20, 20, 20, 0.08);
+        backdrop-filter: blur(10px);
+      }
+
+      .panel h2 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-family: "Fraunces", "Palatino", "Book Antiqua", "Palatino Linotype", serif;
+      }
+
+      .panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(35, 107, 106, 0.12);
+        color: #1d5453;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .list li {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .list li:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+
+      .list span {
+        min-width: 96px;
+        color: var(--muted);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .list a {
+        color: var(--ink);
+        text-decoration: none;
+      }
+
+      .now {
+        border: 1px solid rgba(196, 107, 47, 0.35);
+        background: linear-gradient(120deg, rgba(255, 247, 236, 0.95), rgba(255, 255, 255, 0.6));
+      }
+
+      .timeline {
+        display: grid;
+        gap: 18px;
+      }
+
+      .timeline-item {
+        padding-left: 18px;
+        border-left: 2px solid rgba(35, 107, 106, 0.2);
+        position: relative;
+      }
+
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -6px;
+        top: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--accent-2);
+      }
+
+      .timeline-item h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .timeline-item .meta-line {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 4px 0 8px;
+      }
+
+      .timeline-item ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      footer {
+        margin-top: 32px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .stack > * {
+        animation: rise 0.8s ease-out both;
+        animation-delay: calc(var(--i, 0) * 0.08s);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(14px, -10px);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+
+      @media (max-width: 940px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding: 28px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .list li {
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .list span {
+          min-width: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gridlines" aria-hidden="true"></div>
+    <div class="glow one" aria-hidden="true"></div>
+    <div class="glow two" aria-hidden="true"></div>
+
+    <main class="page">
+      <header class="hero stack">
+        <p class="eyebrow" style="--i: 0;">Indie App Developer</p>
+        <h1 style="--i: 1;">Hyunsung Ko</h1>
+        <p class="lede" style="--i: 2;">
+          Solo indie app developer building my own apps for myself. Background in electronic
+          systems and computer systems with hands-on experience in FPGA design, embedded
+          systems, and hardware-software integration.
+        </p>
+        <div class="cta" style="--i: 3;">
+          <a class="btn primary" href="mailto:hyunsung@outlook.fr">Email</a>
+        </div>
+        <div class="meta" style="--i: 4;">
+          <div class="meta-card">
+            <span class="label">Location</span>
+            <span>Paris, France</span>
+          </div>
+          <div class="meta-card">
+            <span class="label">Core tools</span>
+            <span>Verilog, VHDL, C/C++, Python, Vivado, Vitis</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="layout">
+        <aside class="stack">
+          <section class="panel" style="--i: 0;">
+            <h2>Personal Summary</h2>
+            <p>
+              Passionate and detail-oriented Master's graduate in electronics and computer
+              systems. Proficient in Verilog, VHDL, C/C++, Python, and FPGA development tools.
+              Eager to contribute to innovative hardware solutions in digital electronics and
+              system-on-chip design.
+            </p>
+          </section>
+
+          <section class="panel" style="--i: 1;">
+            <h2>Contact</h2>
+            <ul class="list">
+              <li><span>Email</span><a href="mailto:hyunsung@outlook.fr">hyunsung@outlook.fr</a></li>
+            </ul>
+          </section>
+
+          <section class="panel" style="--i: 2;">
+            <h2>Skills</h2>
+            <div class="chip-row">
+              <span class="chip">FPGA</span>
+              <span class="chip">VLSI</span>
+              <span class="chip">Vivado</span>
+              <span class="chip">Vitis</span>
+              <span class="chip">CPU Architecture</span>
+              <span class="chip">Parallel Programming</span>
+              <span class="chip">C</span>
+              <span class="chip">C++</span>
+              <span class="chip">Verilog</span>
+              <span class="chip">VHDL</span>
+              <span class="chip">Python</span>
+            </div>
+          </section>
+
+          <section class="panel" style="--i: 3;">
+            <h2>Languages</h2>
+            <ul class="list">
+              <li><span>Korean</span><div>Native speaker</div></li>
+              <li><span>French</span><div>Advanced</div></li>
+              <li><span>English</span><div>Advanced</div></li>
+            </ul>
+          </section>
+
+          <section class="panel" style="--i: 4;">
+            <h2>Hobbies</h2>
+            <div class="chip-row">
+              <span class="chip">Piano</span>
+              <span class="chip">Tennis</span>
+              <span class="chip">Photography</span>
+            </div>
+          </section>
+        </aside>
+
+        <section class="stack">
+          <section class="panel now" style="--i: 0;">
+            <h2>Now</h2>
+            <p>
+              Building my own apps as a solo indie developer, guided by personal goals and
+              daily use. I care about clarity, calm workflows, and craftsmanship across
+              hardware and software.
+            </p>
+          </section>
+
+          <section class="panel" style="--i: 1;">
+            <h2>Education</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h3>Sorbonne University (ex. Universite Pierre et Marie Curie, UPMC - Paris VI)</h3>
+                <div class="meta-line">2022-2024 | Paris, France</div>
+                <ul>
+                  <li>Master 1 &amp; 2, Electronic Systems and Computer Systems (SESI)</li>
+                  <li>FPGA, Vitis HLS, RISC processors (ARM, MIPS, RISC-V)</li>
+                  <li>VLSI design, circuit modeling, and SoC simulation</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>Sorbonne University</h3>
+                <div class="meta-line">2019-2022 | Paris, France</div>
+                <ul>
+                  <li>Licence 2 &amp; 3, Electrical and Electronics Engineering (EEA)</li>
+                  <li>Digital systems, sensors, and embedded processors</li>
+                  <li>Programming in C and microcontroller basics</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>Universite Paris 13</h3>
+                <div class="meta-line">2018-2019 | Villetaneuse, France</div>
+                <ul>
+                  <li>Licence 1, Engineering Science</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" style="--i: 2;">
+            <h2>Experience</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h3>Intern, Connected Security Lab - STMicroelectronics</h3>
+                <div class="meta-line">May 2024 - Oct 2024 | Rousset, France</div>
+                <ul>
+                  <li>Confidential R&amp;D on hardware security using Eclypse Z7 and Zmod ADC</li>
+                  <li>FPGA logic for signal processing and ARM core interfacing via UART and BRAM</li>
+                  <li>Python scripts for lab automation and instrument synchronization</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" style="--i: 3;">
+            <h2>Projects</h2>
+            <div class="timeline">
+              <div class="timeline-item">
+                <h3>DCC Central</h3>
+                <div class="meta-line">22/23 | Team of 2 | 5 months</div>
+                <ul>
+                  <li>Digital Command Control system for miniature trains on FPGA (Nexys 4, Basys 3)</li>
+                  <li>Tools: Vivado, Vitis, VHDL, C</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>VLSI Project</h3>
+                <div class="meta-line">22/23 | Team of 2 | 5 months</div>
+                <ul>
+                  <li>ARMv2a architecture modeling</li>
+                  <li>Tools: Vivado, VHDL</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>FPGA Project</h3>
+                <div class="meta-line">23/24 | Team of 3 | 5 months</div>
+                <ul>
+                  <li>IP to accelerate LeNet on ZedBoard (Zynq-7000)</li>
+                  <li>Tools: Vivado, Vitis, VHDL, C</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>Wire-guided Robot</h3>
+                <div class="meta-line">21/22 | Team of 4 | 5 months</div>
+                <ul>
+                  <li>Line-following robot with ARM7 and obstacle detection</li>
+                  <li>Tools: C</li>
+                </ul>
+              </div>
+              <div class="timeline-item">
+                <h3>Brick Break Games</h3>
+                <div class="meta-line">21/22 | Team of 4 | 3 months</div>
+                <ul>
+                  <li>VHDL development on FPGA (Nexys 4) with VGA and accelerometer</li>
+                  <li>Tools: Vivado, VHDL</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </section>
+      </section>
+
+      <footer>Last updated 2025.</footer>
+    </main>
+  </body>
+</html>
